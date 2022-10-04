@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+      PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+   
+<!-- member.xml의 네임 스페이스 지정 -->
+<mapper namespace="mapper.reserv">	
+<!-- 		레코드의 컬럼 이름에 대해 memberVO와 같은 속성 값을 지정 -->
+		
+	 <resultMap type="reservVO" id="reservResult">
+		<result property="seller_id" column="seller_id" />
+		<result property="store_nic" column="store_nic" />
+		<result property="seller_tel" column="seller_tel" />
+		<result property="seller_name" column="seller_name" />
+		<result property="seller_addr" column="seller_addr" />
+		<result property="seller_bizReg" column="seller_bizReg" />
+		<result property="open_time" column="open_time" />
+		<result property="close_time" column="close_time" />
+		<result property="min_People" column="min_People" />
+		<result property="max_People" column="max_People" />
+		<result property="store_introduce" column="store_introduce" />
+	</resultMap>		
+	<select id="selectStoreInfo" resultMap="reservResult" parameterType="String">
+		<![CDATA[ 
+		select sel.seller_id,sto.store_nic ,sel.seller_tel, sel.seller_name, 
+		sel.seller_addr,sel.seller_bizReg, sto.open_time, sto.close_time,
+		sto.min_People, sto.max_People, sto.store_introduce
+		from seller_tbl as sel , storeInfo_tbl as sto
+		where sel.seller_id = sto.seller_id and sel.seller_id = #{seller_id} 
+		 ]]>
+	</select>
+</mapper>

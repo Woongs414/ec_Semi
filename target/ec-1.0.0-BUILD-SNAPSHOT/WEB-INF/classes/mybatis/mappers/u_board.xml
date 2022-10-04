@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+      PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- member.xml의 네임 스페이스 지정 -->
+<mapper namespace="mapper.board">
+	<!-- 레코드의 컬럼 이름에 대해 memberVO와 같은 속성 값을 지정 -->
+	<resultMap type="boardVO" id="boardsResult">
+		<result property="list_num" column="list_num" />
+		<result property="parent_num" column="parent_num" />
+		<result property="category_code" column="category_code" />
+		<result property="user_id" column="user_id" />
+		<result property="u_title" column="u_title" />
+		<result property="u_content" column="u_content" />
+		<result property="image_fileName" column="image_fileName" />
+		<result property="hits" column="hits" />
+		<result property="liked" column="liked" />
+		<result property="bad" column="bad" />
+		<result property="reg_date" column="reg_date" />
+		<result property="mod_date" column="mod_date" />
+	</resultMap>
+	
+	<resultMap id="imgResult" type="imageVO">
+		<result property="image_num" column="image_num" />
+		<result property="list_num" column="list_num" />
+		<result property="origin_fileName" column="origin_fileName" />
+		<result property="image_fileName" column="image_fileName" />
+	</resultMap>
+	
+	<resultMap id="commResult" type="commentVO">
+		<result property="comment_num" column="comment_num" />
+		<result property="list_num" column="list_num" />
+		<result property="comments" column="comments" />
+		<result property="comment_id" column="comment_id" />
+		<result property="parent_num" column="parent_num" />
+		<result property="reg_date" column="reg_date" />
+		<result property="mod_date" column="mod_date" />
+	</resultMap>
+	
+	<select id="selectAllBoardsList" resultMap="boardsResult" parameterType="int">
+		<![CDATA[ 
+		SELECT * FROM u_board_tbl ORDER BY list_num DESC limit #{page},10		
+		 ]]>
+	</select>
+	
+	<select id="selectEatBoardsList" resultMap="boardsResult">
+		<![CDATA[
+		SELECT * FROM u_board_tbl WHERE category_code=1 ORDER BY list_num DESC limit #{page},10
+		 ]]>
+	</select>
+	
+	<select id="selectSeeBoardsList" resultMap="boardsResult">
+		<![CDATA[ 
+		SELECT * FROM u_board_tbl WHERE category_code=2 ORDER BY list_num DESC limit #{page},10	
+		 ]]>
+	</select>
+	
+	<select id="selectAllCommentsList" resultMap="commResult">
+		<![CDATA[ SELECT uct.comment_num, uct.parent_num, uct.list_num, fnc.level, uct.comments, uct.reg_date,uct.mod_date,uct.comment_id
+				FROM(SELECT FUNCTION_hierarchical_comment() AS comment_num, parent_num, list_num, @level AS LEVEL, comments, reg_date, mod_date, comment_id 
+				FROM(SELECT @start_with:=0,@comment_num:=@start_with, @level:=0) tbl JOIN u_comments_tbl WHERE list_num= #{list_num}) fnc
+				left outer join u_comments_tbl uct ON uct.comment_num = fnc.comment_num			
+		 ]]>
+	</select>
+  
+	<insert id="insertNewBoard" parameterType="java.util.Map">
+		<![CDATA[
+			insert into u_board_tbl(list_num, parent_num, category_code, user_id, u_title,u_content,reg_date, mod_date)
+			values(#{list_num}, #{parent_num}, 1, #{user_id}, #{u_title},#{u_content},now(),now() )			
+		 ]]>
+	</insert>  
+  
+	<insert id="insertNewComment" parameterType="java.util.Map">
+		<![CDATA[
+			insert into u_comment_tbl(comment_num, parent_num, list_num, comments, comment_id)
+			values(#{comment_num}, #{parent_num}, #{list_num}, #{comments}, #{comment_id})			
+		 ]]>
+	</insert>
+	
+	<select id="selectNewList_num" resultType="int">
+		<![CDATA[
+			select max(list_num)+1 from u_board_tbl 			
+		 ]]>
+	</select>
+	
+	<select id="selectNewComment_num" resultType="int">
+		<![CDATA[
+			select max(comment_num)+1 from u_comment_tbl 			
+		 ]]>
+	</select>
+
+	<select id="selectBoard" resultType="boardVO" parameterType="int" >
+		<![CDATA[
+			select * from u_board_tbl
+			where list_num = #{list_num} 			
+		 ]]>
+	</select>
+  	
+	<update id="addHits" parameterType="int">
+	<![CDATA[
+			update u_board_tbl
+			set hits = hits+1
+			where list_num=#{list_num}
+	]]>
+	</update>
+	
+	<select id="selectImageFileList" resultMap="imgResult" parameterType="int" >
+		<![CDATA[
+			select * from u_image_tbl
+			where list_num=#{list_num} 
+		]]>
+	</select>
+	<select id="selectEatBoardCount" resultType="int" >
+		<![CDATA[
+			select count(*) from u_board_tbl
+			where category_code=1; 
+		]]>
+	</select>
+	<select id="selectSeeBoardCount" resultType="int" >
+		<![CDATA[
+			select count(*) from u_board_tbl
+			where category_code=2; 
+		]]>
+	</select>
+</mapper>

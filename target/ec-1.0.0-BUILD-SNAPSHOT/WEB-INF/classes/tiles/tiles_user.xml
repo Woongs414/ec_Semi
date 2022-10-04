@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Configuration 2.0//EN" 
+"http://tiles.apache.org/dtds/tiles-config_2_0.dtd">
+<tiles-definitions>
+	<definition name="baseLayout" template="/WEB-INF/views/user/common/layout.jsp">
+		<put-attribute name="title" value=""/>
+ 		<put-attribute name="header" value=""/>
+		<put-attribute name="side" value="/WEB-INF/views/user/common/side.jsp"/>
+		<put-attribute name="body" value=""/>
+ 		<put-attribute name="footer" value=""/>
+	</definition>
+	<!-- 메인페이지 -->
+	<definition name="/main" template="/WEB-INF/views/user/common/main_layout.jsp">
+		<put-attribute name="title" value="사용자 메인페이지"/>
+		<put-attribute name="body" value="/WEB-INF/views/main.jsp"/>
+	</definition>
+	<!-- 카테고리 메인페이지 -->
+	<definition name="/category/categorymain" extends="baseLayout">
+		<put-attribute name="title" value="카테고리"/>
+		<put-attribute name="body" value="/WEB-INF/views/user/category/categorymain.jsp"/>	
+	</definition>
+	<!-- 카테고리 검색페이지 -->
+	<definition name="/category/searchcategory" extends="baseLayout">
+		<put-attribute name="title" value="카테고리"/>
+		<put-attribute name="body" value="/WEB-INF/views/user/category/categorymain.jsp"/>	
+	</definition>
+	<!-- 먹플리페이지 -->
+	<definition name="playListLayout" template="/WEB-INF/views/user/common/playList_layout.jsp">
+		<put-attribute name="title" value=""/>
+ 		<put-attribute name="header" value="/WEB-INF/views/user/common/header.jsp"/>
+		<put-attribute name="side" value=""/>
+		<put-attribute name="body" value=""/>
+ 		<put-attribute name="footer" value=""/>
+	</definition>
+	<definition name="/user/u_board/eatpl" extends="playListLayout">
+		<put-attribute name="title" value="먹거리플레이리스트"/>
+		<put-attribute name="body" value="/WEB-INF/views/user/board/playList.jsp"/>	
+	</definition>
+	<!-- 볼플리페이지 -->
+	<definition name="/user/u_board/seepl" extends="playListLayout">
+		<put-attribute name="title" value="볼거리플레이리스트"/>
+		<put-attribute name="body" value="/WEB-INF/views/user/board/playList.jsp"/>	
+	</definition>
+	
+	<definition name="/user/u_board/u_boardView" extends="playListLayout">
+		<put-attribute name="title" value="글 보기"/>
+		<put-attribute name="body" value="/WEB-INF/views/user/board/u_boardView.jsp"/>	
+	</definition>
+	
+	<definition name="/user/u_board/boardForm" extends="playListLayout">
+		<put-attribute name="title" value="글 쓰기"/>
+		<put-attribute name="body" value="/WEB-INF/views/user/board/boardForm.jsp"/>	
+	</definition>
+	
+	<!-- 마이페이지 타일즈 -->
+	<definition name="mypageLayout" template="/WEB-INF/views/user/common/layout3.jsp">
+		<put-attribute name="title" value=""/>
+		<put-attribute name="side" value="/WEB-INF/views/user/common/sidebar.jsp"/>
+		<put-attribute name="body" value=""/>
+	</definition>
+	<definition name="/mypage" extends="mypageLayout">
+		<put-attribute name="title" value="마이페이지"/>
+		<put-attribute name="body" value="/WEB-INF/views/user/mypage/mypage.jsp"/>	
+	</definition>
+	<definition name="/mypage/order_list" extends="mypageLayout">
+		<put-attribute name="title" value="구매내역"/>
+		<put-attribute name="body" value="/WEB-INF/views/user/mypage/orderHistory.jsp"/>	
+	</definition>
+	<definition name="/mypage/wish" extends="mypageLayout">
+		<put-attribute name="title" value="찜목록"/>
+		<put-attribute name="body" value="/WEB-INF/views/user/mypage/wish.jsp"/>	
+	</definition>
+	<definition name="/mypage/recent_view" extends="mypageLayout">
+		<put-attribute name="title" value="최근본 목록"/>
+		<put-attribute name="body" value="/WEB-INF/views/user/mypage/recentView.jsp"/>	
+	</definition>
+	<!-- 예약 페이지 타일즈-->
+	<definition name="/reservation" template="/WEB-INF/views/user/common/main_layout.jsp">
+		<put-attribute name="title" value="사용자 메인페이지"/>
+		<put-attribute name="body" value="/WEB-INF/views/user/reservation/reservation_detail2.jsp"/>
+	</definition>
+	<definition name="/reservCheck" template="/WEB-INF/views/user/common/main_layout.jsp">
+		<put-attribute name="title" value="사용자 메인페이지"/>
+		<put-attribute name="body" value="/WEB-INF/views/user/reservation/reservation_check.jsp"/>
+	</definition>
+	<!-- 회원가입/로그인 -->
+	<definition name="/user/loginForm" extends="baseLayout">
+		<put-attribute name="title" value="로그인창" />
+		<put-attribute name="body"
+			value="/WEB-INF/views/user/member/login.jsp" />
+	</definition>
+	<definition name="/user/memberForm_main"
+		extends="baseLayout">
+		<put-attribute name="title" value="회원등록선택창" />
+		<put-attribute name="body"
+			value="/WEB-INF/views/user/member/memberForm_main.jsp" />
+	</definition>
+	<definition name="/user/memberForm_udetail"
+		extends="baseLayout">
+		<put-attribute name="title" value="사용자 회원등록창" />
+		<put-attribute name="body"
+			value="/WEB-INF/views/user/member/memberForm_udetail.jsp" />
+	</definition>
+	<definition name="/user/u_regadmin" extends="baseLayout">
+		<put-attribute name="title" value="약관동의창" />
+		<put-attribute name="body"
+			value="/WEB-INF/views/user/member/u_regadmin.jsp" />
+	</definition>
+	<definition name="/user/find_id" extends="baseLayout">
+		<put-attribute name="title" value="아이디찾기" />
+		<put-attribute name="body"
+			value="/WEB-INF/views/user/member/find_id.jsp" />
+	</definition>
+	<definition name="/user/find_pwd" extends="baseLayout">
+		<put-attribute name="title" value="비밀번호찾기" />
+		<put-attribute name="body"
+			value="/WEB-INF/views/user/member/find_pwd.jsp" />
+	</definition>
+	<!-- 마이페이지 타일즈 -->
+	<definition name="mypageLayout" template="/WEB-INF/views/user/common/layout3.jsp">
+		<put-attribute name="title" value=""/>
+		<put-attribute name="side" value="/WEB-INF/views/user/common/sidebar.jsp"/>
+		<put-attribute name="body" value=""/>
+	</definition>
+	<definition name="/mypage" extends="mypageLayout">
+		<put-attribute name="title" value="마이페이지"/>
+		<put-attribute name="body" value="/WEB-INF/views/user/mypage/mypage.jsp"/>	
+	</definition>
+	<definition name="/mypage/order_list" extends="mypageLayout">
+		<put-attribute name="title" value="구매내역"/>
+		<put-attribute name="body" value="/WEB-INF/views/user/mypage/orderHistory.jsp"/>	
+	</definition>
+	<definition name="/mypage/wish" extends="mypageLayout">
+		<put-attribute name="title" value="찜목록"/>
+		<put-attribute name="body" value="/WEB-INF/views/user/mypage/wish.jsp"/>	
+	</definition>
+	<definition name="/mypage/recent_view" extends="mypageLayout">
+		<put-attribute name="title" value="최근본 목록"/>
+		<put-attribute name="body" value="/WEB-INF/views/user/mypage/recentView.jsp"/>	
+	</definition>
+</tiles-definitions>

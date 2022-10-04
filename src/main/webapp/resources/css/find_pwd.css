@@ -1,0 +1,66 @@
+#body-wrapper{
+	min-height:100%;
+	position:relative;
+}
+.inquiry{
+	margin-top: 100px;
+	padding-bottom:200px;
+}
+footer{
+	width:100%;
+	height:60px;
+	position:absolute;
+	bottom:0;
+	left:0;
+}
+.ok{
+	margin-top:20px;
+}
+#ok1, #ok2{
+	width:100px;
+}
+input{
+	width:300px;
+	
+}
+.prove{
+	width:100px;
+	font-size:11px;
+}
+
+li a{
+	text-decoration:none;
+	color:white;
+}
+li a:hover{
+	color:yellow;
+	text-decoration:none;
+}
+#top ul {
+	list-style:none; /*불린기호없앰*/
+	text-align:center; /*좌우 중앙으로 배치 */
+	background:#248ddb;
+}
+#top ul li{
+	display:inline-block;
+	width:150px;
+	height:50px;
+	padding:10px 0;
+	margin:10px 0;
+	margin-right:40px;
+	font-weight:bold;
+	vertical-align:middle; 
+}
+
+.content_header{
+	text-align:center;
+}
+.content_header img{
+	border-bottom:1px solid black;
+}
+.content_header table {
+	border-collapse: separate;
+	border-spacing: 20px;
+	width:500px;
+}
+

@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+      PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+   
+<!-- ※나중에 필수적으로 수정 필요함 -->
+<mapper namespace="mapper.member">	
+<!-- 		레코드의 컬럼 이름에 대해 memberVO와 같은 속성 값을 지정 -->
+	<resultMap type="memberVO" id="memResult">
+		<result property="user_no" column="user_no" />
+		<result property="user_id" column="user_id" />
+		<result property="user_pwd" column="user_pwd" />
+		<result property="pwd_ck" column="pwd_ck" />
+		<result property="tel" column="tel" />
+		<result property="user_name" column="user_name" />
+		<result property="user_email" column="user_email" />
+		<result property="birth" column="birth" />
+		<result property="gender" column="gender" />
+	</resultMap>
+	<resultMap type="sellerVO" id="sellResult">
+		<result property="seller_num" column="seller_num" />
+		<result property="category_code" column="category_code" />
+		<result property="seller_id" column="seller_id" />
+		<result property="seller_pw" column="seller_pw" />
+		<result property="seller_tel" column="seller_tel" />
+		<result property="seller_bizReg" column="seller_bizReg" />
+		<result property="seller_name" column="seller_name" />
+		<result property="seller_email" column="seller_email" />
+		<result property="seller_addr" column="seller_addr" />
+		<result property="bizReg_image_name" column="bizReg_image_name" />
+		<result property="area" column="area" />
+		<result property="keyword" column="keyword" />		
+		<result property="storeInfo_num" column="storeInfo_num" />
+		<result property="seller_id" column="seller_id" />
+		<result property="image_fileName" column="image_fileName" />
+		<result property="store_introduce" column="store_introduce" />
+		<result property="openTime" column="openTime" />
+		<result property="closeDay" column="closeDay" />
+		<result property="store_nic" column="store_nic" />
+		<result property="store_benefit" column="store_benefit" />
+		<result property="reg_date" column="reg_date" />
+		<result property="mod_date" column="mod_date" />
+	</resultMap>	
+	<resultMap type="storeVO" id="storeResult">
+		<result property="storeInfo_num" column="storeInfo_num" />
+		<result property="seller_id" column="seller_id" />
+		<result property="image_fileName" column="image_fileName" />
+		<result property="store_introduce" column="store_introduce" />
+		<result property="openTime" column="openTime" />
+		<result property="closeDay" column="closeDay" />
+		<result property="store_nic" column="store_nic" />
+		<result property="store_benefit" column="store_benefit" />
+		<result property="reg_date" column="reg_date" />
+		<result property="mod_date" column="mod_date" />
+	</resultMap>	
+	<resultMap type="productVO" id="proResult">
+		<result property="pro_num" column="pro_num" />
+		<result property="category_code" column="category_code" />
+		<result property="seller_id" column="seller_id" />
+		<result property="pro_name" column="pro_name" />
+		<result property="pro_price" column="pro_price" />
+		<result property="pro_stock" column="pro_stock" />
+		<result property="pro_count" column="pro_count" />
+		<result property="sales" column="sales" />
+		<result property="commision" column="commision" />
+		<result property="reg_date" column="reg_date" />
+		<result property="mod_date" column="mod_date" />
+	</resultMap>
+
+	<resultMap id="revResult" type="reviewVO">
+		<result column="review_num" property="review_num" />
+		<result column="user_id" property="user_id" />
+		<result column="pro_num" property="pro_num" />
+		<result column="seller_id" property="seller_id" />
+		<result column="image_fileName" property="image_fileName" />
+		<result column="content" property="content" />
+		<result column="rating" property="rating" />
+		<result column="rating_avg" property="rating_avg" />
+		<result column="review_count" property="review_count" />
+		<result column="liked" property="liked" />
+		<result column="reg_date" property="reg_date" />
+		<result column="mod_date" property="mod_date" />
+	</resultMap>
+	
+	<!--카테고리-가게select  -->
+	<select id="selectAllStores" resultMap="sellResult">
+		<![CDATA[ SELECT a.*, b.storeInfo_num, b.image_fileName, b.store_introduce, b.open_time, b.closeDay, b.store_nic,b.store_benefit FROM seller_tbl a, storeinfo_tbl b WHERE a.seller_id = b.seller_id ]]>
+	</select>
+	
+	
+	<!--카테고리-가게메뉴 select  -->
+	<select id="selectMenu" resultMap="proResult">
+		<![CDATA[ SELECT * FROM product_tbl ]]>
+	</select>
+	
+	
+	<!--카테고리-가게리뷰 select  -->
+	<select id="selectReview" resultMap="revResult">
+		<![CDATA[ SELECT *, (rating / 5.0) * 100 as rating_percent FROM review_tbl ]]>
+	</select>
+	
+	
+	<!--카테고리-리뷰 좋아요 update  -->
+	<update id="updatereviewlike" parameterType="int">
+		<![CDATA[ 
+			update review_tbl
+			set liked = liked + 1
+			where
+			review_num=#{review_num}
+		]]>
+	</update>
+	
+	<!--카테고리-리뷰 좋아요 select -->
+	<select id="selectreviewlike" parameterType="int" resultType="String">
+		select liked from review_tbl where review_num=#{review_num}
+	</select>
+
+	<!--카테고리-리뷰 총개수, 평균별점 select -->
+	<select id="selectReviewavgsum" resultMap="revResult">
+	SELECT seller_id, round(AVG(rating),2) AS rating_avg , COUNT(*) AS review_count
+	FROM review_tbl GROUP BY seller_id 
+	</select>
+	
+	<!--카테고리-가게검색select  -->
+	<select id="selectSearchStores" parameterType="java.util.HashMap" resultMap="sellResult">
+		<![CDATA[
+			select * from seller_tbl
+		]]>
+		<where>
+			<if test="key01!=null and key01!=''" >
+				keyword like CONCAT('%',#{key01},'%') or
+			</if>
+			<if test="key02!=null and key02!=''" >
+				keyword like CONCAT('%',#{key02},'%') or
+			</if>
+			<if test="key03!=null and key03!=''" >
+				keyword like CONCAT('%',#{key03},'%') or
+			</if>
+			<if test="area!=null and area!=''" >
+				area = #{area}
+			</if>
+		</where>
+		order by reg_date desc
+	</select>
+	<!--카테고리 지역검색  -->
+	<select id="selectsearcharea" parameterType="String" resultType="sellerVO" >
+		<![CDATA[ 
+			select * from seller_tbl where area = #{area} 
+		]]>
+	</select>
+	
+	<!--카테고리 가게 상세검색  -->
+	<select id="selectstoreInfo" parameterType="String" resultType="storeVO" >
+		<![CDATA[ 
+			select * from storeinfo_tbl where seller_id = #{seller_id} 
+		]]>
+	</select>
+	
+	
+	<insert id="insertMember" parameterType="memberVO">
+		<![CDATA[
+		insert into user_tbl(user_no,user_id,user_nick, user_pwd,tel,user_name, user_email, birth_yy, birth_mm, birth_dd, gender)
+			values((SELECT IFNULL(MAX(user_no)+1,1) FROM user_tbl b), #{user_id}, #{user_nick},#{user_pwd}, #{tel}, #{user_name}, #{user_email}, #{birth_yy},#{birth_mm},#{birth_dd}, #{gender})
+	 		
+		]]>
+	</insert>
+	
+	<select id="loginById" resultType="memberVO" parameterType="memberVO">
+		<![CDATA[
+			select * from user_tbl
+			where user_id = #{user_id} and user_pwd = #{user_pwd}
+		]]>
+	</select>
+</mapper>

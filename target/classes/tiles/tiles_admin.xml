@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Configuration 2.0//EN" 
+"http://tiles.apache.org/dtds/tiles-config_2_0.dtd">
+<tiles-definitions>
+	<definition name="/admin/login"
+		template="/WEB-INF/views/admin/common/layout.jsp">
+		<put-attribute name="title" value="어드민 로그인" />
+		<put-attribute name="header" value="" />
+		<put-attribute name="side" value="" />
+		<put-attribute name="body" value="/WEB-INF/views/admin/member/login.jsp" />
+		<put-attribute name="footer" value="/WEB-INF/views/admin/common/footer.jsp" />
+	</definition>
+
+</tiles-definitions>
